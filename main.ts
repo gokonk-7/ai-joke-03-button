@@ -6,10 +6,14 @@
 // Outside the grader's container, MAKEFUN_OUTPUT_DIR stands in for /output:
 //   mkdir -p out && MAKEFUN_OUTPUT_DIR=out node main.ts
 
-import { writeFileSync } from 'node:fs';
+import { mkdirSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 
 const OUTPUT_DIR = process.env.MAKEFUN_OUTPUT_DIR ?? '/output';
+
+// The grader guarantees /output exists, but creating it here keeps the
+// program runnable anywhere (local runs, other harnesses) without failing.
+mkdirSync(OUTPUT_DIR, { recursive: true });
 
 writeFileSync(
   join(OUTPUT_DIR, 'entry.txt'),
